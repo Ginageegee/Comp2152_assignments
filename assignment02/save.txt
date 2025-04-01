@@ -1,0 +1,7 @@
+
+Hero wiw has killed 1 monster(s) and gained 3 stars.
+Total Monsters Killed (all games): 1
+Monster has killed the hero previously.
+Total Monsters Killed (all games): 1
+Hero hib has killed 1 monster(s) and gained 3 stars.
+Total Monsters Killed (all games): 2
