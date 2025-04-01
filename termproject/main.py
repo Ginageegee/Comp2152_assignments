@@ -143,6 +143,17 @@ if not input_invalid:
     print("    |    --- You have a strong player: " + str((combat_strength + health_points) >= 15))
 
 
+    # Trigger a treasure hunt
+    print("    ------------------------------------------------------------------")
+    print("    |", end="    ")
+    input("Go on a treasure hunt (Press enter)")
+
+    belt, health_points = functions.treasure_hunt(health_points, belt)
+    print(f"    |    Updated health points: {health_points}")
+    print(f"    |    Updated belt: {belt}")
+
+
+
 
     # Roll for the monster's power
     print("    |", end="    ")

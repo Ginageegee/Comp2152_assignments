@@ -47,6 +47,47 @@ def collect_loot(loot_options, belt):
     print("    |    Your belt: ", belt)
     return loot_options, belt
 
+#group assignment feature Treasure Hunt (Regina)
+def treasure_hunt(health_points, belt):
+
+    #possible treasures
+    treasures = [("Golden Apple", 5), ("Magic Elixir", 10), ("Ancient Relic", -5), ("Cursed Dagger", -10)]
+
+    # The lower the health, the higher the chance of finding treasure
+    find_treasure = random.choices([True, False], weights=[max(1, 30 - health_points), health_points], k=1)[0]
+
+    #If treasure was found...
+    if find_treasure:
+        found_treasure = random.choice(treasures)
+
+        # Nested loops with list comprehension to process treasure effects
+        treasure_effects = [
+            effect_message #creates a list that stores the resulting message for each treasure effect
+            for name, effect in [found_treasure]
+            for effect_message in [
+                #possible effects the treasure can have
+                f"You found a {name}! It heals you!" if effect > 0 and health_points <= 10 else
+                f"You found a {name}, but your health is too high to benefit from it!" if effect > 0 else
+                f"You found a {name}! It curses you!" if effect < 0 and health_points >= 15 else
+                f"You found a {name}, but your health is too low to take the curse!"
+            ]
+        ]
+
+        # Apply the effect to health points
+        health_points += sum(effect for _, effect in [found_treasure]
+                             if (effect > 0 and health_points <= 10) or (effect < 0 and health_points >= 15))
+
+        # Print the effects
+        print("\n".join([f"    |    {effect}" for effect in treasure_effects]))
+
+        # Add treasure to belt if it's beneficial (healing treasure only)
+        if found_treasure[1] > 0:  # Only add healing treasures to the belt
+            belt.append(found_treasure[0])
+
+    else:
+        print("    |    No treasure was found this time.")
+
+    return belt, health_points
 
 
 # Hero's Attack Function
