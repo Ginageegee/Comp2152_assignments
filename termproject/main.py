@@ -182,8 +182,18 @@ if not input_invalid:
         m_combat_strength) + " using the " + power_roll + " magic power")
 
     # Call Recursive function
+
     print("    |", end="    ")
-    num_dream_lvls = input("How many dream levels do you want to go down?")
+
+    while True:  # Loop indefinitely until valid input is received
+        num_dream_lvls = input("How many dream levels do you want to go down? ").strip()  # Remove extra spaces
+
+        if num_dream_lvls.isdigit():  # Check if input is numeric
+            num_dream_lvls = int(num_dream_lvls)  # Convert to integer
+            break  # Exit the loop once valid input is given
+        else:
+            print("    |    Invalid input! Please enter a valid number.")
+
     if num_dream_lvls != 0:
         health_points -= 1
         crazy_level = functions.inception_dream(num_dream_lvls)
