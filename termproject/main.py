@@ -235,7 +235,7 @@ if not input_invalid:
         #Prints Type and its respective effect
         print(
             f"Active Weather Effects: {[weather['type'] for weather in weather_effects if weather['effects'] in active_effects]}")
-        print("\n🌦️ The following weather types have been activated:")
+        print("\n \U0001F327\U0000FE0F The following weather types have been activated:")
         for weather in weather_effects:
             if weather["effects"] in active_effects:
                 print(f"- {weather['type']}: {weather['effects']}")
@@ -269,14 +269,14 @@ if not input_invalid:
         for effect in active_effects:
             if "skip_turn" in effect:
                 skipped_turn = random.choice(["Hero", "Monster"])
-                print(f"❄ {skipped_turn} loses a turn due to Snow!")
+                print(f"\u2744\ufe0f {skipped_turn} loses a turn due to Snow!")
 
         # Hero turn
         if hero_paralyzed:
-            print("⚡ Hero is paralyzed and skips this turn!")
+            print("\u26A1 Hero is paralyzed and skips this turn!")
             hero_paralyzed = False  # Recovers next round
         elif skipped_turn == "Hero":
-            print("❄️ Hero loses a turn due to Snow!")
+            print("\u2744\ufe0f Hero loses a turn due to Snow!")
             skipped_turn = None  # Only lose 1 turn
         else:
             if random.choice([True, False]):
@@ -288,10 +288,10 @@ if not input_invalid:
 
         # Monster turn
         if monster_paralyzed:
-            print("⚡ Monster is paralyzed and skips this turn!")
+            print("\u26A1 Monster is paralyzed and skips this turn!")
             monster_paralyzed = False  # Recovers next round
         elif skipped_turn == "Monster":
-            print("❄️ Monster loses a turn due to Snow!")
+            print("	\u2744\ufe0f Monster loses a turn due to Snow!")
             skipped_turn = None  # Only lose 1 turn
         else:
             print("Monster attacks!")
