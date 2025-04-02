@@ -16,6 +16,18 @@ weapons = ["Fist", "Knife", "Club", "Gun", "Bomb", "Nuclear Bomb"]
 loot_options = ["Health Potion", "Poison Potion", "Secret Note", "Leather Boots", "Flimsy Gloves"]
 belt = []
 
+# Define the weather
+weather_effects = [
+    {"type": "Sunny", "effects": {"hero_hp_boost": 10, "monster_attack_debuff": -4}},
+    {"type": "Rain", "effects": {"hero_hp_boost": -3, "hero_attack_debuff": 10}},
+    {"type": "Foggy", "effects": {"hero_attack_debuff": -5, "monster_hp_boost": 7}},
+    {"type": "Darkness", "effects": {"monster_attack_debuff": 10}},
+    {"type": "Thunderstorm", "effects": {"both_damage": -7, "paralyzed": True}},
+    {"type": "Snow", "effects": {"skip_turn": "random"}}
+]
+
+
+
 # Define the Monster's Powers
 monster_powers = {
     "Fire Magic": 2,
@@ -201,47 +213,94 @@ if not input_invalid:
         print("combat strength: " + str(combat_strength))
         print("health points: " + str(health_points))
 
-    # Fight Sequence
-    # Loop while the monster and the player are alive. Call fight sequence functions
+    # Display Hero and Monster Stats Before Battle
+    print("    ------------------------UPDATED STATS------------------------------")
+    print(f"    |    Hero Stats -> Health: {health_points}, Combat Strength: {combat_strength}")
+    print(f"    |    Monster Stats -> Health: {m_health_points}, Combat Strength: {m_combat_strength}")
+    print("    ------------------------------------------------------------------")
+
+
+
+    # Loop while the monster and the player are alive.
     print("    ------------------------------------------------------------------")
     print("    |    You meet the monster. FIGHT!!")
     while m_health_points > 0 and health_points > 0:
-        # Fight Sequence
-        print("    |", end="    ")
 
-        # Lab 5: Question 5:
-        input("Roll to see who strikes first (Press Enter)")
-        attack_roll = random.choice(small_dice_options)
-        if not (attack_roll % 2 == 0):
-            print("    |", end="    ")
-            input("You strike (Press enter)")
-            m_health_points = functions.hero_attacks(combat_strength, m_health_points)
-            if m_health_points == 0:
-                num_stars = 3
-            else:
-                print("    |", end="    ")
-                print("------------------------------------------------------------------")
-                input("    |    The monster strikes (Press enter)!!!")
-                health_points = functions.monster_attacks(m_combat_strength, health_points)
-                if health_points == 0:
-                    num_stars = 1
-                else:
-                    num_stars = 2
+
+
+        # Select active weather effects
+        active_effects = [weather["effects"] for weather in weather_effects if random.random() < 0.2]  #20% chances of activating each type so
+        #battle is mor dynamic
+
+        #Prints Type and its respective effect
+        print(
+            f"Active Weather Effects: {[weather['type'] for weather in weather_effects if weather['effects'] in active_effects]}")
+        print("\n🌦️ The following weather types have been activated:")
+        for weather in weather_effects:
+            if weather["effects"] in active_effects:
+                print(f"- {weather['type']}: {weather['effects']}")
+
+        # Apply active weather effects
+        health_points += sum(effect.get("hero_hp_boost", 0) for effect in active_effects)
+        m_health_points += sum(effect.get("monster_hp_boost", 0) for effect in active_effects)
+        m_combat_strength += sum(effect.get("monster_attack_debuff", 0) for effect in active_effects)
+        combat_strength += sum(effect.get("hero_attack_debuff", 0) for effect in active_effects)
+        m_health_points += sum(effect.get("both_damage", 0) for effect in active_effects)
+        health_points += sum(effect.get("both_damage", 0) for effect in active_effects)
+
+        # Make sure that health goes below 0 during the weather sequence and keep the combat strength at least to 1 so the battle keeps going
+        health_points = max(health_points, 0)
+        m_health_points = max(m_health_points, 0)
+        combat_strength = max(combat_strength, 1)
+        m_combat_strength = max(m_combat_strength, 1)
+
+        print(
+            "    ----------------------STATS AFTER WEATHER EFFECT--------------------")
+        print(f"    |    Hero Stats -> Health: {health_points}, Combat Strength: {combat_strength}")
+        print(f"    |    Monster Stats -> Health: {m_health_points}, Combat Strength: {m_combat_strength}")
+        print("    ------------------------------------------------------------------")
+        input("Press Enter to continue...")
+
+        hero_paralyzed = any(effect.get("paralyzed", False) for effect in active_effects)
+        monster_paralyzed = any(effect.get("paralyzed", False) for effect in active_effects)
+
+        # Determine if a turn is skipped
+        skipped_turn = None
+        for effect in active_effects:
+            if "skip_turn" in effect:
+                skipped_turn = random.choice(["Hero", "Monster"])
+                print(f"❄ {skipped_turn} loses a turn due to Snow!")
+
+        # Hero turn
+        if hero_paralyzed:
+            print("⚡ Hero is paralyzed and skips this turn!")
+            hero_paralyzed = False  # Recovers next round
+        elif skipped_turn == "Hero":
+            print("❄️ Hero loses a turn due to Snow!")
+            skipped_turn = None  # Only lose 1 turn
         else:
-            print("    |", end="    ")
-            input("The Monster strikes (Press enter)")
-            health_points = functions.monster_attacks(m_combat_strength, health_points)
-            if health_points == 0:
-                num_stars = 1
-            else:
-                print("    |", end="    ")
-                print("------------------------------------------------------------------")
-                input("The hero strikes!! (Press enter)")
+            if random.choice([True, False]):
+                print("Hero attacks!")
                 m_health_points = functions.hero_attacks(combat_strength, m_health_points)
-                if m_health_points == 0:
+                if m_health_points <= 0:
                     num_stars = 3
-                else:
-                    num_stars = 2
+                    break
+
+        # Monster turn
+        if monster_paralyzed:
+            print("⚡ Monster is paralyzed and skips this turn!")
+            monster_paralyzed = False  # Recovers next round
+        elif skipped_turn == "Monster":
+            print("❄️ Monster loses a turn due to Snow!")
+            skipped_turn = None  # Only lose 1 turn
+        else:
+            print("Monster attacks!")
+            health_points = functions.monster_attacks(m_combat_strength, health_points)
+            if health_points <= 0:
+                num_stars = 1
+                break
+            else:
+                num_stars = 2
 
     # Final Score Display
     tries = 0
