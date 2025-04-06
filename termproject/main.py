@@ -16,6 +16,26 @@ weapons = ["Fist", "Knife", "Club", "Gun", "Bomb", "Nuclear Bomb"]
 loot_options = ["Health Potion", "Poison Potion", "Secret Note", "Leather Boots", "Flimsy Gloves"]
 belt = []
 
+# Defining the spells
+spells = [
+    {"name": "Fire Balls", "element_type": "fire", "attack_power": 3, "skill_lvl_required": 8},
+    {"name": "Flying Icicle", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 10},
+    {"name": "Twisting Vines", "element_type": "earth", "attack_power": 1, "skill_lvl_required": 3},
+    {"name": "Fire Sword", "element_type": "fire", "attack_power": 4, "skill_lvl_required": 10},
+    {"name": "Electric Shock", "element_type": "electricity", "attack_power": 5, "skill_lvl_required": 10},
+    {"name": "Freeze Ray", "element_type": "ice", "attack_power": 2, "skill_lvl_required": 8},
+    {"name": "Healing", "element_type": "none", "hp_boost": 5, "skill_lvl_required": 20},
+    {"name": "Poisonous Mushroom Cloud", "element_type": "earth", "attack_power": 5, "skill_lvl_required": 15},
+    {"name": "Invisibility", "element_type": "none", "attack_power": 2, "skill_lvl_required": 12},
+    {"name": "Tidal Wave", "element_type": "water", "attack_power": 4, "skill_lvl_required": 16},
+]
+
+# Defining the hero's skill level
+skill_lvl = 0
+
+# Defining the hero's available spells based on their skill level
+available_spells = []
+
 # Define the weather
 weather_effects = [
     {"type": "Sunny", "effects": {"hero_hp_boost": 10, "monster_attack_debuff": -4}},
@@ -122,6 +142,12 @@ if not input_invalid:
     input("Roll the dice for the monster's health points (Press enter)")
     m_health_points = random.choice(big_dice_options)
     print("    |    Player rolled " + str(m_health_points) + " health points for the monster")
+
+    # roll for hero's spell skill level
+    print("    |", end="    ")
+    input("Roll the dice for your spell skill level (Press enter)")
+    skill_lvl = random.choice(big_dice_options)
+    print("    |    Player rolled " + str(skill_lvl) + " skill level")
 
     # Collect Loot
     print("    ------------------------------------------------------------------")

@@ -89,6 +89,9 @@ def treasure_hunt(health_points, belt):
 
     return belt, health_points
 
+# Function for casting a spell during the fight sequence
+def cast_spell():
+    print("123") # placeholder
 
 # Hero's Attack Function
 def hero_attacks(combat_strength, m_health_points):
