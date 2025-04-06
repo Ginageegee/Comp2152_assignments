@@ -16,24 +16,26 @@ weapons = ["Fist", "Knife", "Club", "Gun", "Bomb", "Nuclear Bomb"]
 loot_options = ["Health Potion", "Poison Potion", "Secret Note", "Leather Boots", "Flimsy Gloves"]
 belt = []
 
-# Defining the spells
-spells = [
-    {"name": "Fire Balls", "element_type": "fire", "attack_power": 3, "skill_lvl_required": 8},
+# Defining the spells (Cast-A-Spell feature)
+spell_options = [
+    {"name": "Fire Balls", "element_type": "fire", "attack_power": 3, "skill_lvl_required": 5},
+    {"name": "Basic Healing", "element_type": "none", "hp_boost": 2, "skill_lvl_required": 3},
     {"name": "Flying Icicle", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 10},
     {"name": "Twisting Vines", "element_type": "earth", "attack_power": 1, "skill_lvl_required": 3},
     {"name": "Fire Sword", "element_type": "fire", "attack_power": 4, "skill_lvl_required": 10},
     {"name": "Electric Shock", "element_type": "electricity", "attack_power": 5, "skill_lvl_required": 10},
-    {"name": "Freeze Ray", "element_type": "ice", "attack_power": 2, "skill_lvl_required": 8},
-    {"name": "Healing", "element_type": "none", "hp_boost": 5, "skill_lvl_required": 20},
-    {"name": "Poisonous Mushroom Cloud", "element_type": "earth", "attack_power": 5, "skill_lvl_required": 15},
-    {"name": "Invisibility", "element_type": "none", "attack_power": 2, "skill_lvl_required": 12},
+    {"name": "Freeze Ray", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 8},
+    {"name": "Mud Goblins Summoning", "element_type": "earth", "attack_power": 3, "skill_lvl_required": 6},
+    {"name": "Poisonous Mushroom Cloud", "element_type": "earth", "attack_power": 5, "skill_lvl_required": 18},
+    {"name": "Invisibility", "element_type": "none", "attack_power": 3, "skill_lvl_required": 14},
     {"name": "Tidal Wave", "element_type": "water", "attack_power": 4, "skill_lvl_required": 16},
+    {"name": "Super Healing", "element_type": "none", "hp_boost": 10, "skill_lvl_required": 20}
 ]
 
-# Defining the hero's skill level
+# Defining the hero's skill level (Cast-A-Spell feature)
 skill_lvl = 0
 
-# Defining the hero's available spells based on their skill level
+# Defining the hero's available spells based on their skill level (Cast-A-Spell feature)
 available_spells = []
 
 # Define the weather
@@ -129,7 +131,7 @@ if not input_invalid:
 
     # If the weapon rolled is not a Fist, print out "Thank goodness you didn't roll the Fist..."
     if weapons[weapon_roll - 1] != "Fist":
-        print("    |    --- Thank goodness you didn't roll the Fist...")
+        print("    |    --- But thank goodness you didn't roll the Fist...")
 
     # Roll for player health points
     print("    |", end="    ")
@@ -143,11 +145,27 @@ if not input_invalid:
     m_health_points = random.choice(big_dice_options)
     print("    |    Player rolled " + str(m_health_points) + " health points for the monster")
 
-    # roll for hero's spell skill level
+    # Roll for hero's spell skill level (Cast-A-Spell feature)
     print("    |", end="    ")
-    input("Roll the dice for your spell skill level (Press enter)")
+    input("Roll the dice for your spell-casting skill level (Press enter)")
     skill_lvl = random.choice(big_dice_options)
-    print("    |    Player rolled " + str(skill_lvl) + " skill level")
+    print("    |    Player rolled " + str(skill_lvl) + " for their skill level")
+
+
+    # Filtering the available spells based on the hero's skill level (Cast-A-Spell feature)
+    available_spells = [spell for spell in spell_options if spell["skill_lvl_required"] <= skill_lvl]
+    print("    |    Here are the spells you can cast based on your skill level:")
+    if available_spells:
+        for spell in available_spells:
+            if "hp_boost" in spell:
+                print(f"    |    {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
+            else:
+                print(f"    |    {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
+    else:
+        print("    |    You don't know any spells yet! You skill level is too low.")
+    print("    |    Hopefully these spells will come in handy during a fight...")
+
+
 
     # Collect Loot
     print("    ------------------------------------------------------------------")
@@ -253,12 +271,11 @@ if not input_invalid:
     while m_health_points > 0 and health_points > 0:
 
 
-
         # Select active weather effects
         active_effects = [weather["effects"] for weather in weather_effects if random.random() < 0.2]  #20% chances of activating each type so
-        #battle is mor dynamic
+        # battle is more dynamic
 
-        #Prints Type and its respective effect
+        # Prints Type and its respective effect
         print(
             f"Active Weather Effects: {[weather['type'] for weather in weather_effects if weather['effects'] in active_effects]}")
         print("\n \U0001F327\U0000FE0F The following weather types have been activated:")
@@ -307,7 +324,17 @@ if not input_invalid:
         else:
             if random.choice([True, False]):
                 print("Hero attacks!")
-                m_health_points = functions.hero_attacks(combat_strength, m_health_points)
+
+                # Cast-A-Spell feature
+                casting_spell = input("Do you want to cast a spell? (y/n): ")
+                if casting_spell.lower() == "y":
+                    if available_spells:
+                        health_points, m_health_points = functions.cast_spell(available_spells, m_health_points, active_effects, health_points)
+                    else:
+                        print("Uh oh, you don't know any spells!")
+                else:
+                    print("Casting spell option skipped.")
+                    m_health_points = functions.hero_attacks(combat_strength, m_health_points)
                 if m_health_points <= 0:
                     num_stars = 3
                     break

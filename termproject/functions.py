@@ -89,9 +89,82 @@ def treasure_hunt(health_points, belt):
 
     return belt, health_points
 
-# Function for casting a spell during the fight sequence
-def cast_spell():
-    print("123") # placeholder
+# Function for casting a spell during the fight sequence (Cast-A-Spell feature)
+def cast_spell(available_spells, m_health_points, active_weather, health_points):
+    # List comprehension for getting the different weather types
+    weather_types = [weather['type'] for weather in active_weather if weather['effects'] in active_weather]
+
+    # Displaying available spells
+    print("    |    Choose a spell to cast:")
+    for x, spell in enumerate(available_spells):
+        if "hp_boost" in spell:
+            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
+        else:
+            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
+
+    # Get the hero's spell choice
+    while True:
+        try:
+            spell_choice = int(input("    |    Enter spell number:"))
+
+            # Checking if choice is valid (within range of available spells)
+            if 1 <= spell_choice <= len(available_spells):
+                selected_spell = next((s for s in available_spells if s['name'.startswith(f"{spell_choice}")]), None)
+                if selected_spell:
+                    break;
+                else:
+                    print("    |    You don't know that spell!")
+            else:
+                print("    |    Invalid spell Number.")
+        except ValueError:
+            print("    |    Please enter a valid number.")
+
+    # Getting the values from the spells dictionary
+    spell_element = selected_spell['element_type']
+    attack_power = selected_spell.get['attack_power', 0]
+    hp_boost = selected_spell.get['hp_boost', 0]
+    spell_effectiveness = 1.0 # default multiplier for spell effectiveness
+
+    # Nested conditionals for weather effects on spell casting
+    if "Rain" in weather_types:
+        if spell_element == "fire":
+            print("    |    Oh no! Your fire spell fizzles in the rain! No effect.")
+            spell_effectiveness = 0
+        elif spell_element == "water":
+            print("    |    Your water spell is boosted by the rain!")
+            spell_effectiveness = 2.0
+    elif "Sunny" in weather_types:
+        if spell_element == "fire":
+            print("    |    Your fire spell is empowered by the sun!")
+            spell_effectiveness = 1.5
+        elif spell_element == "ice":
+            print("    |    Oh no! Your ice spell was melted by the sun! No effect.")
+            spell_effectiveness = 0
+    elif "Snow" in weather_types:
+        if spell_element == "ice":
+            print("    |    Your ice spell is stronger in the snow!")
+            spell_effectiveness = 2.0
+        elif spell_element == "fire":
+            print("    |    Your fire spell was weakened by the snow!")
+            spell_effectiveness = 0.5
+    elif "Thunderstorm" in weather_types:
+        if spell_element == "electricity":
+            print("    |    Your electric spell is supercharged by the storm!")
+            spell_effectiveness = 2.5
+
+    # Nested conditionals for applying spell effects
+    if "hp_boost" in selected_spell:
+        print(f"    |    You cast a {selected_spell['name']} spell and heal yourself for {hp_boost} health points!")
+        return health_points + hp_boost, m_health_points
+    else:
+        actual_damage = int(attack_power * spell_effectiveness)
+        if spell_effectiveness > 0:
+            print(f"    |    You cast a {selected_spell['name']} spell for {actual_damage} damage!")
+            return m_health_points - actual_damage
+        else:
+            print(f"    |    Your spell failed to have any effect!")
+            return m_health_points
+
 
 # Hero's Attack Function
 def hero_attacks(combat_strength, m_health_points):
