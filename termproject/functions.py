@@ -109,7 +109,7 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
 
             # Checking if choice is valid (within range of available spells)
             if spell_choice <= len(available_spells):
-                selected_spell = next((s for s in available_spells if s['name'.startswith(f"{spell_choice}")]), None)
+                selected_spell = next((s for s in available_spells if s['name'].startswith(f"{spell_choice}")), None)
                 if selected_spell:
                     break;
                 else:
