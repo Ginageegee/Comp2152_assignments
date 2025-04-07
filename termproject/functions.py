@@ -98,9 +98,9 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
     print("    |    Choose a spell to cast:")
     for x, spell in enumerate(available_spells):
         if "hp_boost" in spell:
-            print(f"    |    {x}. {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
+            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
         else:
-            print(f"    |    {x}. {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
+            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
 
     # Get the hero's spell choice
     while True:
@@ -108,7 +108,7 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
             spell_choice = int(input("    |    Enter spell number:"))
 
             # Checking if choice is valid (within range of available spells)
-            if spell_choice <= len(available_spells):
+            if 0 < spell_choice <= len(available_spells):
                 selected_spell = next((s for s in available_spells if s['name'].startswith(f"{spell_choice}")), None)
                 if selected_spell:
                     break;
@@ -121,8 +121,8 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
 
     # Getting the values from the spells dictionary
     spell_element = selected_spell['element_type']
-    attack_power = selected_spell.get['attack_power', 0]
-    hp_boost = selected_spell.get['hp_boost', 0]
+    attack_power = selected_spell.get('attack_power', 0)
+    hp_boost = selected_spell.get('hp_boost', 0)
     spell_effectiveness = 1.0 # default multiplier for spell effectiveness
 
     # Nested conditionals for weather effects on spell casting
@@ -160,10 +160,10 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
         actual_damage = int(attack_power * spell_effectiveness)
         if spell_effectiveness > 0:
             print(f"    |    You cast a {selected_spell['name']} spell for {actual_damage} damage!")
-            return m_health_points - actual_damage
+            return health_points, m_health_points - actual_damage
         else:
             print(f"    |    Your spell failed to have any effect!")
-            return m_health_points
+            return health_points, m_health_points
 
 
 # Hero's Attack Function

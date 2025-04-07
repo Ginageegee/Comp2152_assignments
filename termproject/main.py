@@ -18,18 +18,18 @@ belt = []
 
 # Defining the spells (Cast-A-Spell feature)
 spell_options = [
-    {"name": "Fire Balls", "element_type": "fire", "attack_power": 3, "skill_lvl_required": 5},
-    {"name": "Basic Healing", "element_type": "none", "hp_boost": 2, "skill_lvl_required": 3},
-    {"name": "Flying Icicle", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 10},
-    {"name": "Twisting Vines", "element_type": "earth", "attack_power": 1, "skill_lvl_required": 3},
-    {"name": "Fire Sword", "element_type": "fire", "attack_power": 4, "skill_lvl_required": 10},
-    {"name": "Electric Shock", "element_type": "electricity", "attack_power": 5, "skill_lvl_required": 10},
-    {"name": "Freeze Ray", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 8},
-    {"name": "Mud Goblins Summoning", "element_type": "earth", "attack_power": 3, "skill_lvl_required": 6},
-    {"name": "Poisonous Mushroom Cloud", "element_type": "earth", "attack_power": 5, "skill_lvl_required": 18},
-    {"name": "Invisibility", "element_type": "none", "attack_power": 3, "skill_lvl_required": 14},
-    {"name": "Tidal Wave", "element_type": "water", "attack_power": 4, "skill_lvl_required": 16},
-    {"name": "Super Healing", "element_type": "none", "hp_boost": 10, "skill_lvl_required": 20}
+    {"name": "1. Fire Balls", "element_type": "fire", "attack_power": 3, "skill_lvl_required": 5},
+    {"name": "2. Basic Healing", "element_type": "none", "hp_boost": 2, "skill_lvl_required": 3},
+    {"name": "3. Flying Icicle", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 10},
+    {"name": "4. Twisting Vines", "element_type": "earth", "attack_power": 1, "skill_lvl_required": 3},
+    {"name": "5. Fire Sword", "element_type": "fire", "attack_power": 4, "skill_lvl_required": 10},
+    {"name": "6. Electric Shock", "element_type": "electricity", "attack_power": 5, "skill_lvl_required": 10},
+    {"name": "7. Freeze Ray", "element_type": "ice", "attack_power": 4, "skill_lvl_required": 8},
+    {"name": "8. Mud Goblins Summoning", "element_type": "earth", "attack_power": 3, "skill_lvl_required": 6},
+    {"name": "9. Poisonous Mushroom Cloud", "element_type": "earth", "attack_power": 5, "skill_lvl_required": 18},
+    {"name": "10. Invisibility", "element_type": "none", "attack_power": 3, "skill_lvl_required": 14},
+    {"name": "11. Tidal Wave", "element_type": "water", "attack_power": 4, "skill_lvl_required": 16},
+    {"name": "12. Super Healing", "element_type": "none", "hp_boost": 10, "skill_lvl_required": 20}
 ]
 
 # Defining the hero's skill level (Cast-A-Spell feature)
