@@ -98,9 +98,9 @@ def cast_spell(available_spells, m_health_points, active_weather, health_points)
     print("    |    Choose a spell to cast:")
     for x, spell in enumerate(available_spells):
         if "hp_boost" in spell:
-            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
+            print(f"    |    {x}. {spell['name']} - Element: {spell['element_type']} - Healing: {spell['hp_boost']}")
         else:
-            print(f"    |    {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
+            print(f"    |    {x}. {spell['name']} - Element: {spell['element_type']} - Attack: {spell.get('attack_power', 0)}")
 
     # Get the hero's spell choice
     while True:
