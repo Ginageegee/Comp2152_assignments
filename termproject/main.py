@@ -325,11 +325,13 @@ if not input_invalid:
             if random.choice([True, False]):
                 print("Hero attacks!")
 
-                # Cast-A-Spell feature
+                # Cast-A-Spell feature1
+
                 casting_spell = input("Do you want to cast a spell? (y/n): ")
                 if casting_spell.lower() == "y":
                     if available_spells:
-                        active_weather_types = [weather for weather in weather_effects if weather["effects"] in active_effects]
+                        active_weather_types = [weather["type"] for weather in weather_effects if weather["effects"] in active_effects]
+
                         health_points, m_health_points = functions.cast_spell(available_spells, m_health_points, active_weather_types, health_points)
                     else:
                         print("Uh oh, you don't know any spells!")

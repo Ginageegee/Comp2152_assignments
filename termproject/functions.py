@@ -23,7 +23,7 @@ def use_loot(belt, health_points):
     return belt, health_points
 
 
-# Lab 4: Question 3 
+# Lab 4: Question 3
 def collect_loot(loot_options, belt):
     ascii_image3 = """
                       @@@ @@                
@@ -90,9 +90,10 @@ def treasure_hunt(health_points, belt):
     return belt, health_points
 
 # Function for casting a spell during the fight sequence (Cast-A-Spell feature)
-def cast_spell(available_spells, m_health_points, active_weather, health_points):
+def cast_spell(available_spells, m_health_points, weather_types, health_points):
+
     # List comprehension for getting the different weather types
-    weather_types = [weather['type'] for weather in active_weather if weather['effects'] in active_weather]
+
 
     # Displaying available spells
     print("    |    Choose a spell to cast:")
@@ -254,5 +255,4 @@ def inception_dream(num_dream_lvls):
         # 1 + 1 + 1 + 1 + inception_dream(1)
         # 1 + 1 + 1 + 1 + 2
         return 1 + int(inception_dream(num_dream_lvls - 1))
-
 
